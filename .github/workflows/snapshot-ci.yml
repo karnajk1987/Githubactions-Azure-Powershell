@@ -17,6 +17,15 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
+
+    - name: Install Azure cli
+      run: |
+        sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg
+        curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
+        AZ_REPO=$(lsb_release -cs)
+        echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
+        sudo apt-get update
+        sudo apt-get install azure-cli   
                 
     - name: Login to Azure with Service Principal
       uses: Azure/login@v1.4.3
@@ -26,6 +35,13 @@ jobs:
         ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
     
+    - name: To List the az account
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.0.72
+        inlineScript: |
+          az account list  
+          
     - name: Install Azure PowerShell 
     # uses: powershell-devops/powershell-devops@02eb25c9e71d654cf5e82f4af4b09cd7ba31054e
       uses: powershell-devops/powershell-devops@v0.2.0
@@ -34,3 +50,4 @@ jobs:
       shell: pwsh
       run: |
         .\snapshot.ps1
+

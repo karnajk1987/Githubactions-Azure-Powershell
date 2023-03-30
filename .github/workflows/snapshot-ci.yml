@@ -1,0 +1,24 @@
+on: [push]
+
+name: AzurePowerShellScriptToCreateSnoshot
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:  
+      - name: Login via Az module
+        with: # Set Azure credentials secret as an input
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+        env: # Or as an environment variable
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
+    
+      - name: Install Azure PowerShell 
+      # uses: powershell-devops/powershell-devops@02eb25c9e71d654cf5e82f4af4b09cd7ba31054e
+        uses: powershell-devops/powershell-devops@v0.2.0
+        
+      - name: Run Azure Powershell Script
+        shell: pwsh
+        run: |
+          .\snapshot.ps1

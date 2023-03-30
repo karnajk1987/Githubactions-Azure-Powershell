@@ -11,22 +11,13 @@ on:
   
 jobs:
   Azure-Powershell-Script:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
-
-    - name: Install Azure cli
-      run: |
-        sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg
-        curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
-        AZ_REPO=$(lsb_release -cs)
-        echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
-        sudo apt-get update
-        sudo apt-get install azure-cli   
-                
+      
     - name: Login to Azure with Service Principal
       uses: Azure/login@v1.4.3
       with:
@@ -34,16 +25,30 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         allow-no-subscriptions: true
     
-    - name: To List the az account
-      uses: azure/CLI@v1
+    - name: Azure PowerShell Action
+      uses: Azure/powershell@v1
       with:
-        azcliversion: 2.0.72
         inlineScript: |
           az account list  
-          
-#     - name: Install Azure PowerShell 
-#     # uses: powershell-devops/powershell-devops@02eb25c9e71d654cf5e82f4af4b09cd7ba31054e
-#       uses: powershell-devops/powershell-devops@v0.2.0
+
+    - name: Install Azure PowerShell 
+    # uses: powershell-devops/powershell-devops@02eb25c9e71d654cf5e82f4af4b09cd7ba31054e
+      uses: powershell-devops/powershell-devops@v0.2.0
+      
+    - name: Install Azure PowerShell Module
+    # uses: powershell-devops/powershell-devops@02eb25c9e71d654cf5e82f4af4b09cd7ba31054e
+      shell: pwsh
+      run: |
+        Install-Module -Name AzureRM -RequiredVersion 2.3.0
+
+    - name: Azure PowerShell Action
+      uses: Azure/powershell@v1
+      with:
+        # Specify the Az PowerShell script here.
+        inlineScript: 2.8.0
+        # Azure PS version to be used to execute the script, example: 1.8.0, 2.8.0, 3.4.0. To use the latest version, specify "latest".
+        azPSVersion: stop
+        # Select the value of the ErrorActionPreference variable for executing the script. Options: stop, continue, silentlyContinue. Default is Stop.
 
     - name: Run Azure Powershell Script
       shell: pwsh

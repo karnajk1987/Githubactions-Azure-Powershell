@@ -3,8 +3,7 @@ on: [push]
 name: AzurePowerShellScriptToCreateSnoshot
 
 jobs:
-
-  build:
+  Azure-Powershell-Script:
     runs-on: ubuntu-latest
     
     steps:  

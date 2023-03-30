@@ -1,6 +1,6 @@
 #Connect-AzAccount
 
-Select-AzSubscription -SubscriptionId "58f58984-c7ec-4128-9dcf-9b5d77697c3d"
+# Select-AzSubscription -SubscriptionId "58f58984-c7ec-4128-9dcf-9b5d77697c3d"
 
 $resourceGroupName = 'webapp-dev'
 $location = 'eastus'

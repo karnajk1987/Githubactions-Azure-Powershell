@@ -1,6 +1,6 @@
 on: [push]
 
-name: AzurePowerShellSample
+name: AzurePowerShellScriptToCreateSnoshot
 
 jobs:
 
@@ -13,10 +13,19 @@ jobs:
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
         enable-AzPSSession: true 
+    
+    - name: Install Azure PowerShell 
+      # uses: powershell-devops/powershell-devops@02eb25c9e71d654cf5e82f4af4b09cd7ba31054e
+      uses: powershell-devops/powershell-devops@v0.2.0
+#       with:
+#         # Optional required version to install. If not provided, will install the latest version. Example: 0.0.7
+#         required-version: # optional
+#         # Optional minimum version to install. If not provided, will install the latest version. Example: 0.0.7
+#         minimum-version: # optional
+#         # Optional maximum version to install. If not provided, will install the latest version. Example: 0.0.7
+#         maximum-version: # optional
         
-    - name: Run Azure PowerShell script
-      uses: azure/powershell@v1
-      with:
-        inlineScript: |
-          Get-AzVM -ResourceGroupName "ResourceGroup11"
-        azPSVersion: "latest"
+    - name: Run Azure Powershell Script
+      shell: pwsh
+      run: |
+        .\snapshot.ps1

@@ -13,7 +13,7 @@ env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
 jobs: 
-  azurestack-test:
+  Azure-Powershell-CreateSnoshot-From-VM:
     runs-on: windows-latest
     steps:
     # Checkout the repository to the GitHub Actions runner

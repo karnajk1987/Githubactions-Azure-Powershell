@@ -8,50 +8,35 @@ on:
     branches:  none # [ main ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  
-jobs:
-  Azure-Powershell-Script:
+
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+jobs: 
+  azurestack-test:
     runs-on: windows-latest
-    
     steps:
     # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v2
-      
-    - name: Login to Azure with Service Principal
-      uses: Azure/login@v1.4.3
-      with:
-        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-        allow-no-subscriptions: true
-    
-    - name: Azure PowerShell Action
-      uses: Azure/powershell@v1
-      with:
-        inlineScript: |
-          az account list  
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Install Azure PowerShell 
-    # uses: powershell-devops/powershell-devops@02eb25c9e71d654cf5e82f4af4b09cd7ba31054e
-      uses: powershell-devops/powershell-devops@v0.2.0
-      
-    - name: Install Azure PowerShell Module
-    # uses: powershell-devops/powershell-devops@02eb25c9e71d654cf5e82f4af4b09cd7ba31054e
-      shell: pwsh
-      run: |
-        Install-Module -Name AzureRM -RequiredVersion 2.3.0
+      - name: Login to AzureStack with Az Powershell
+        uses: azure/login@releases/v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          environment: 'AzureStack'
+          enable-AzPSSession: true
 
-    - name: Azure PowerShell Action
-      uses: Azure/powershell@v1
-      with:
-        # Specify the Az PowerShell script here.
-        inlineScript: 2.8.0
-        # Azure PS version to be used to execute the script, example: 1.8.0, 2.8.0, 3.4.0. To use the latest version, specify "latest".
-#         azPSVersion: silentlyContinue
-#         # Select the value of the ErrorActionPreference variable for executing the script. Options: stop, continue, silentlyContinue. Default is Stop.
+      - name: Run Az PowerShell Script 
+        uses: azure/powershell@v1
+        with:
+          azPSVersion: '3.1.0'
+          inlineScript: |
+            hostname
+            Get-AzContext
+            Get-AzResourceGroup
 
-    - name: Run Azure Powershell Script
-      shell: pwsh
-      run: |
-        .\snapshot.ps1
-
+      - name: Run Azure Powershell Script
+        shell: pwsh
+        run: |
+          .\snapshot.ps1

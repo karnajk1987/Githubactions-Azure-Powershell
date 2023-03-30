@@ -29,7 +29,7 @@ jobs:
 #         sudo apt-get install azure-cli   
                 
     - name: Login to Azure with Service Principal
-      uses: Azure/login@v1.4.3
+      uses: Azure/actions/login@V1
       env:
         ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}

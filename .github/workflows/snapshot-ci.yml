@@ -32,7 +32,8 @@ jobs:
         with:
           azPSVersion: "latest"
           inlineScript: |
-            hostname
+            Login-AzureRmAccount
+            Install-Module AzureRm
             Get-AzContext
             Get-AzResourceGroup
 

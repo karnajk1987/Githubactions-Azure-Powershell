@@ -31,9 +31,7 @@ jobs:
         uses: azure/powershell@v1
         with:
           azPSVersion: "latest"
-          inlineScript: |
-            Login-AzureRmAccount
-            Install-Module AzureRm
+          inlineScript: |           
             Get-AzContext
             Get-AzResourceGroup
 

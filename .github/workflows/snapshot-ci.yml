@@ -1,4 +1,4 @@
-name: 'AzurePowerShellScriptToCreateSnoshot'
+name: 'AzurePowerShell-Script-To-CreateSnoshot'
 
 on:
   push:

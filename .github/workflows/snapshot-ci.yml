@@ -32,7 +32,7 @@ jobs:
         with:
           azPSVersion: "latest"
           inlineScript: |  
-            Install-Module AzureRm
+            Install-Module Az-Accounts -Scope CurrentUser -Force
             Get-AzContext
             Get-AzResourceGroup
 

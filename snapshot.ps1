@@ -9,7 +9,7 @@ $snapshotName = 'webapp-dev-wind-01-image-backup-02'
 $resourceGroupName2 = 'webapp-qa'
 
 
-$vm = Get-AzureRm `
+$vm = Get-AzVM `
     -ResourceGroupName $resourceGroupName `
     -Name $vmName
 

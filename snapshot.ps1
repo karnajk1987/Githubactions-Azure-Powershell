@@ -5,7 +5,7 @@
 $resourceGroupName = 'webapp-dev'
 $location = 'eastus'
 $vmName = 'webapp-dev-wind-01'
-$snapshotName = 'webapp-dev-wind-01-image-backup-02'
+$snapshotName = 'webapp-dev-wind-01-image-backup-03'
 $resourceGroupName2 = 'webapp-qa'
 
 

@@ -41,7 +41,7 @@ jobs:
 
   Azure-Powershell-CreateSnoshot-From-VM:
     name: Powershell Script Task
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     environment: dev
     needs: [scan-powershell-config]
     steps:

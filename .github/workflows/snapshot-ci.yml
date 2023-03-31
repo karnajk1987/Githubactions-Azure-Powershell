@@ -27,11 +27,13 @@ jobs:
           environment: 'AzureStack'
           enable-AzPSSession: true
 
-      - name: Run Az PowerShell Script 
+      - name: Run Dependency for AzureRM Module
         uses: azure/powershell@v1
         with:
           azPSVersion: "latest"
-          inlineScript: |           
+          inlineScript: |  
+            Login-AzureRmAccount
+            Install-Module AzureRm
             Get-AzContext
             Get-AzResourceGroup
 

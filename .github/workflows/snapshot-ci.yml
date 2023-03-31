@@ -32,7 +32,9 @@ jobs:
         with:
           azPSVersion: "latest"
           inlineScript: |  
-            Install-Module -Name AzureRM -AllowClobber -Scope CurrentUser -Force
+            Install-Module -Name Azure -AllowClobber
+            Import-Module -Name Azure
+            Add-AzureAccount
             Register-PSRepository -Default
             Get-AzContext
             Get-AzResourceGroup

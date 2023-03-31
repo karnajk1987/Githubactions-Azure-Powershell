@@ -21,7 +21,7 @@ jobs:
       - name: Install the powershell dependencies
         run: |
            Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-           Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+           Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force -AllowClobber
            Set-PSRepository PSGallery -InstallationPolicy Trusted
            Install-Module Universal
            Get-Module Universal -ListAvailable

@@ -40,6 +40,6 @@ jobs:
             Get-AzResourceGroup
 
       - name: Run Azure Powershell Script
-        shell: pwsh
+        shell: powershell
         run: |
           .\snapshot.ps1

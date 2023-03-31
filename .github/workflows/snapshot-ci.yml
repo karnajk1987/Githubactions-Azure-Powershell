@@ -17,29 +17,36 @@ jobs:
     runs-on: windows-latest
     steps:
     # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v1
+      - name: Install the powershell dependencies
+        run: |
+           Set-PSRepository PSGallery -InstallationPolicy Trusted
+           Install-Module Universal
+           Get-Module Universal -ListAvailable
+           Install-Module -Name Azure -AllowClobber
+           Import-Module -Name Azure
+           Add-AzureAccount
+        shell: pwsh  
+        
+      - name: Script
+        run: Write-Host 'Hello, Going to execute Powershell Script'          
+        shell: pwsh  
+        
       - name: Login to AzureStack with Az Powershell
         uses: azure/login@releases/v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          environment: 'AzureStack'
           enable-AzPSSession: true
 
-      - name: Run Dependency for AzureRM Module
+      - name: Check the Resource Group for AzureRM Module
         uses: azure/powershell@v1
         with:
           azPSVersion: "latest"
           inlineScript: |  
-            Install-Module -Name Azure -AllowClobber
-            Import-Module -Name Azure
-            Add-AzureAccount
-            Register-PSRepository -Default
             Get-AzContext
             Get-AzResourceGroup
 
       - name: Run Azure Powershell Script
-        shell: powershell
-        run: |
-          .\snapshot.ps1
+        shell: pwsh
+        run: ./snapshot.ps1
+          

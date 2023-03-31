@@ -16,7 +16,7 @@ env:
 jobs: 
 
   scan-powershell-config:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     name: Scan Powershell with Checov
     steps:
       - name: Checkout repo
@@ -41,7 +41,7 @@ jobs:
 
   Azure-Powershell-CreateSnoshot-From-VM:
     name: Powershell Script Task
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     environment: dev
     needs: [scan-powershell-config]
     steps:

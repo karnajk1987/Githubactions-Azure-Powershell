@@ -9,12 +9,41 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:
+env:  
+  WORKING_DIRECTORY: ./
   ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
 jobs: 
-  Azure-Powershell-CreateSnoshot-From-VM:
+
+  scan-powershell-config:
     runs-on: windows-latest
+    name: Scan Powershell with Checov
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@master
+
+      - name: Run Checkov Scan
+        id: checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ${{ env.WORKING_DIRECTORY }}
+          soft_fail: true # optional: do not return an error code if there are failed checks
+          # check: CKV_AWS_1 # optional: run only a specific check_id. can be comma separated list
+          # skip_check: CKV_AWS_2 # optional: skip a specific check_id. can be comma separated list
+          # quiet: true # optional: display only failed checks
+          # framework: terraform # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
+          # output_format: sarif # optional: the output format, one of: cli, json, junitxml, github_failed_only, or sarif. Default: sarif
+          # download_external_modules: true # optional: download external terraform modules from public git repositories and terraform registry
+          # log_level: DEBUG # optional: set log level. Default WARNING
+          # config_file: path/this_file
+          # baseline: cloudformation/.checkov.baseline # optional: Path to a generated baseline file. Will only report results not in the baseline.
+          # container_user: 1000 # optional: Define what UID and / or what GID to run the container under to prevent permission issues
+
+  Azure-Powershell-CreateSnoshot-From-VM:
+    name: Powershell Script Task
+    runs-on: windows-latest
+    environment: dev
+    needs: [scan-powershell-config]
     steps:
     # Checkout the repository to the GitHub Actions runner
       - uses: actions/checkout@v1

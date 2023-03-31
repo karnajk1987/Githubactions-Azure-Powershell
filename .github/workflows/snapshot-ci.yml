@@ -22,20 +22,22 @@ jobs:
         run: |
            Set-PSRepository PSGallery -InstallationPolicy Trusted
            Install-Module Universal
+           Import-Module Az.Account
+           Import-Module Az.Compute
            Get-Module Universal -ListAvailable
         shell: pwsh  
         
-      - name: Script
+      - name: Sample Test Script
         run: Write-Host 'Hello, Going to execute Powershell Script'          
         shell: pwsh  
         
-      - name: Login to AzureStack with Az Powershell
+      - name: Login to Azure Portal Az Powershell
         uses: azure/login@releases/v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
 
-      - name: Check the Resource Group for AzureRM Module
+      - name: Check the Resource Group for AzRM Module
         uses: azure/powershell@v1
         with:
           azPSVersion: "latest"

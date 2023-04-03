@@ -1,7 +1,7 @@
 # Define the resource IDs of the VMs and NICs to delete
 $vmResourceIds = @(
-    "/subscriptions/58f58984-c7ec-4128-9dcf-9b5d77697c3d/resourceGroups/webapp-dev-rg/providers/Microsoft.Compute/virtualMachines/webapp-vm-01",
-    "/subscriptions/58f58984-c7ec-4128-9dcf-9b5d77697c3d/resourceGroups/webapp-dev-rg/providers/Microsoft.Network/networkInterfaces/webapp-vm-01346",
+#     "/subscriptions/58f58984-c7ec-4128-9dcf-9b5d77697c3d/resourceGroups/webapp-dev-rg/providers/Microsoft.Compute/virtualMachines/webapp-vm-01",
+#     "/subscriptions/58f58984-c7ec-4128-9dcf-9b5d77697c3d/resourceGroups/webapp-dev-rg/providers/Microsoft.Network/networkInterfaces/webapp-vm-01346",
     "/subscriptions/58f58984-c7ec-4128-9dcf-9b5d77697c3d/resourceGroups/webapp-dev-rg/providers/Microsoft.Compute/virtualMachines/webapp-vm-02",
     "/subscriptions/58f58984-c7ec-4128-9dcf-9b5d77697c3d/resourceGroups/webapp-dev-rg/providers/Microsoft.Network/networkInterfaces/webapp-vm-02670"
 )

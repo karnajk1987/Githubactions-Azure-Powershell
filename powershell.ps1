@@ -14,12 +14,12 @@ foreach ($resourceId in $vmResourceIds) {
         # Extract the VM name from the resource ID
         $vmName = ($resourceId -split '/')[-1]
         # Delete the VM
-        Remove-AzVM -ResourceGroupName <resource-group> -Name $vmName -Force -AsJob
+        Remove-AzVM -ResourceGroupName webapp-dev-rg -Name $vmName -Force -AsJob
     } elseif ($resourceId.Contains("/networkInterfaces/")) {
         # Extract the NIC name from the resource ID
         $nicName = ($resourceId -split '/')[-1]
         # Delete the NIC
-        Remove-AzNetworkInterface -ResourceGroupName <resource-group> -Name $nicName -Force
+        Remove-AzNetworkInterface -ResourceGroupName webapp-dev-rg -Name $nicName -Force
     } else {
         Write-Host "Unknown resource type: $resourceId"
     }

@@ -76,6 +76,6 @@ jobs:
 
       - name: Run Azure Powershell Script
         shell: pwsh
-        run: ./snapshot.ps1
+        run: ./powershell.ps1
         
           

@@ -15,7 +15,7 @@ foreach ($nicResourceId in $nicResourceIds) {
     # If the network interface is associated with a virtual machine, dissociate it
     if ($null -ne $nic.VirtualMachine) {
         $nic.VirtualMachine = $null
-        Set-AzNetworkInterface -ResourceId $nicResourceId -NetworkInterface $nic
+        Set-AzNetworkInterface -InputObject $nic
     }
 
     # Delete the network interface

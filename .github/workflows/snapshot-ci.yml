@@ -76,6 +76,6 @@ jobs:
 
       - name: Run Azure Powershell Script
         shell: pwsh
-        run: ./dissaciate_nic.ps1
+        run: ./new_diss_nic.ps1
         
 

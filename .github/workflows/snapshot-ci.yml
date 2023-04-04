@@ -76,6 +76,6 @@ jobs:
 
       - name: Run Azure Powershell Script
         shell: pwsh
-        run: ./new_diss_nic.ps1
+        run: ./to_delete_nic_vm.ps1
         
 

@@ -78,5 +78,3 @@ jobs:
         shell: pwsh
         run: ./delete_nic.ps1
         
-        
-

@@ -80,7 +80,7 @@ jobs:
       - name: Get Private IP
         id: private_ip
         run: |
-          $vm = Get-AzVM -ResourceGroupName webapp-prod-p01 -Name ${{ env.AZURE_VM_NAME_1 }}
+          $vm = Get-AzVM -ResourceGroupName "webapp-prod-p01" -Name "${{ env.AZURE_VM_NAME_1 }}"
           $privateIp = $vm.NetworkProfile.NetworkInterfaces[0].IpConfigurations[0].PrivateIpAddress
           Write-Output "::set-output name=private_ip::$privateIp"
       - name: RDP into Azure VM

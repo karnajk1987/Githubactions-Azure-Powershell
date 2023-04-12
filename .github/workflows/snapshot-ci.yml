@@ -76,7 +76,7 @@ jobs:
 
       - name: Run Azure Powershell Script
         shell: pwsh
-        run: ./stop_vm.ps1
+        run: ./remote_login_01.ps1
         
         
         

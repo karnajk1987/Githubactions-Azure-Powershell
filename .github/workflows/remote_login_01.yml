@@ -38,7 +38,7 @@ jobs:
           # baseline: cloudformation/.checkov.baseline # optional: Path to a generated baseline file. Will only report results not in the baseline.
           # container_user: 1000 # optional: Define what UID and / or what GID to run the container under to prevent permission issues
 
-  Azure-Powershell-CreateSnoshot-From-VM:
+  Azure-Powershell-Script-Test:
     name: Powershell Script Task
     runs-on: windows-latest
     environment: dev
@@ -80,10 +80,22 @@ jobs:
   Azure-Remote-Login-VM:
     name: Login to Windows VM using RDP
     runs-on: windows-latest
+    environment: dev
+    needs: [Azure-Powershell-Script-Test]
     steps:
-      - name: Install RDP client
+      # - name: Install RDP client
+      #   run: |
+      #     choco install -y microsoft-remote-desktop
+      # - name: Connect to VM using RDP
+      #   run: |
+      #     mstsc.exe /v:10.1.1.5
+
+      - name: Download Microsoft Remote Desktop client
         run: |
-          choco install -y microsoft-remote-desktop
+          Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2094662" -OutFile "rdp.msi"
+      - name: Install Microsoft Remote Desktop client
+        run: |
+          msiexec /i rdp.msi /quiet
       - name: Connect to VM using RDP
         run: |
           mstsc.exe /v:10.1.1.5

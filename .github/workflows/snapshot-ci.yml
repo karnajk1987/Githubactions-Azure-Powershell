@@ -1,20 +1,19 @@
-name: 'AzurePowerShell-Script-To-CreateSnoshot-From-VM'
+name: "AzurePowerShell-Script-To-CreateSnoshot-From-VM"
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths: .github/workflows/snapshot-ci.yml
   pull_request:
-    branches:  none # [ main ]
+    branches: none # [ main ]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-env:  
+env:
   WORKING_DIRECTORY: ./
-  ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
 
-jobs: 
-
+jobs:
   scan-powershell-config:
     runs-on: ubuntu-latest
     name: Scan Powershell with Checov
@@ -45,21 +44,21 @@ jobs:
     environment: dev
     needs: [scan-powershell-config]
     steps:
-    # Checkout the repository to the GitHub Actions runner
+      # Checkout the repository to the GitHub Actions runner
       - uses: actions/checkout@v1
       - name: Install the powershell dependencies
         run: |
-           Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-           Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force -AllowClobber
-           Set-PSRepository PSGallery -InstallationPolicy Trusted
-           Install-Module Universal
-           Get-Module Universal -ListAvailable
-        shell: pwsh  
-        
+          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+          Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force -AllowClobber
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module Universal
+          Get-Module Universal -ListAvailable
+        shell: pwsh
+
       - name: Sample Test Script
-        run: Write-Host 'Hello, Going to execute Powershell Script'          
-        shell: pwsh  
-        
+        run: Write-Host 'Hello, Going to execute Powershell Script'
+        shell: pwsh
+
       - name: Login to Azure Portal Az Powershell
         uses: azure/login@releases/v1
         with:
@@ -70,13 +69,25 @@ jobs:
         uses: azure/powershell@v1
         with:
           azPSVersion: "latest"
-          inlineScript: |  
+          inlineScript: |
             Get-AzContext
             Get-AzResourceGroup
 
-      - name: Run Azure Powershell Script
-        shell: pwsh
-        run: ./remote_login_01.ps1
-        
-        
-        
+      # - name: Run Azure Powershell Script
+      #   shell: pwsh
+      #   run: ./remote_login_01.ps1
+
+      - name: Get Private IP
+        id: private_ip
+        run: |
+          $vm = Get-AzVM -Name ${{ env.AZURE_VM_NAME_1 }}
+          $privateIp = $vm.NetworkProfile.NetworkInterfaces[0].IpConfigurations[0].PrivateIpAddress
+          Write-Output "::set-output name=private_ip::$privateIp"
+      - name: RDP into Azure VM
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ steps.private_ip.outputs.private_ip }}
+          username: ${{ env.AZURE_VM_USER }}
+          password: ${{ env.AZURE_VM_PASSWORD }}
+          script: |
+            mstsc.exe /v:${{ steps.private_ip.outputs.private_ip }}

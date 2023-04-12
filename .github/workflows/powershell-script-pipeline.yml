@@ -73,21 +73,8 @@ jobs:
             Get-AzContext
             Get-AzResourceGroup
 
-      # - name: Run Azure Powershell Script
-      #   shell: pwsh
-      #   run: ./remote_login_01.ps1
+      - name: Run Azure Powershell Script
+        shell: pwsh
+        run: ./remote_login_01.ps1
 
-      - name: Get Private IP
-        id: private_ip
-        run: |
-          $vm = Get-AzVM -ResourceGroupName "webapp-prod-p01" -Name "${{ env.AZURE_VM_NAME_1 }}"
-          $privateIp = $vm.NetworkProfile.NetworkInterfaces[0].IpConfigurations[0].PrivateIpAddress
-          Write-Output "::set-output name=private_ip::$privateIp"
-      - name: RDP into Azure VM
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ steps.private_ip.outputs.private_ip }}
-          username: ${{ env.AZURE_VM_USER }}
-          password: ${{ env.AZURE_VM_PASSWORD }}
-          script: |
-            mstsc.exe /v:${{ steps.private_ip.outputs.private_ip }}
+

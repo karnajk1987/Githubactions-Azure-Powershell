@@ -79,7 +79,10 @@ jobs:
           azPSVersion: "latest"
           inlineScript: |
             Enable-PsRemoting -Force
-            
+            Get-Command Enable-AzVMPSRemoting -Module Az.Compute
+            Invoke-AzVMCommand -Name 'AZ-VM-00-0' -ResourceGroupName 'webapp-prod-p01' -ScriptBlock {get-service win*} -Credential (get-credential)
+            Enter-AzVM -name 'AZ-VM-00-0' -ResourceGroupName 'webapp-prod-p01' -Credential (get-credential)
+
   Azure-Remote-Login-VM:
     name: Login to Windows VM using RDP
     runs-on: windows-latest
@@ -96,11 +99,19 @@ jobs:
         run: |
           mstsc.exe /v:10.1.1.4
 
+      - name: Check hostname of the RDP
+        uses: azure/powershell@v1
+        with:
+          azPSVersion: "latest"
+          inlineScript: |
+            Get-LocalUser
+            ipconfig /all
+
       - name: Run Azure Powershell Script
         shell: pwsh
-        run: ./remote_login_01.ps1
+        run: .\remote_login_01.ps1
 
-      - name: Check hostname
+      - name: Cross verify the hostname
         uses: azure/powershell@v1
         with:
           azPSVersion: "latest"

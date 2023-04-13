@@ -72,10 +72,20 @@ jobs:
           inlineScript: |
             Get-AzContext
             Get-AzResourceGroup
+            
+      - name: Check the VM Remote Login Using Invoke
+        uses: azure/powershell@v1
+        with:
+          azPSVersion: "latest"
+          inlineScript: |
+            Enable-AzVMPSRemoting -Name 'AZ-VM-00-0' -ResourceGroupName 'webapp-prod-p01' -Protocol https -OsType Windows
+            Invoke-AzVMCommand -Name 'AZ-VM-00-0' -ResourceGroupName 'webapp-prod-p01' -ScriptBlock {get-service win*} -Credential (get-credential)
+            Enter-AzVM -name 'AZ-VM-00-0' -ResourceGroupName 'webapp-prod-p01' -Credential (get-credential)    
+            
 
-      - name: Run Azure Powershell Script
-        shell: pwsh
-        run: ./remote_login_02.ps1
+#       - name: Run Azure Powershell Script
+#         shell: pwsh
+#         run: ./remote_login_02.ps1
 
   Azure-Remote-Login-VM:
     name: Login to Windows VM using RDP

@@ -75,7 +75,7 @@ jobs:
 
       - name: Run Azure Powershell Script
         shell: pwsh
-        run: ./remote_login_01.ps1
+        run: ./remote_login_02.ps1
 
   Azure-Remote-Login-VM:
     name: Login to Windows VM using RDP
@@ -98,7 +98,7 @@ jobs:
           msiexec /i rdp.msi /quiet
       - name: Connect to VM using RDP
         run: |
-          mstsc.exe /v:10.1.1.5
+          mstsc.exe /v:10.1.1.4
         
       - name: Check hostname 
         uses: azure/powershell@v1

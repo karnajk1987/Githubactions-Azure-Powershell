@@ -99,11 +99,11 @@ jobs:
       - name: Connect to VM using RDP
         run: |
           mstsc.exe /v:10.1.1.5
-
+        
       - name: Check hostname 
         uses: azure/powershell@v1
         with:
           azPSVersion: "latest"
           inlineScript: |
             hostname
-            ipconfig   
+            ipconfig /all

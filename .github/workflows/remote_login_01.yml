@@ -79,9 +79,7 @@ jobs:
           azPSVersion: "latest"
           inlineScript: |
             Enable-PsRemoting -Force
-            Invoke-AzVMCommand -Name 'AZ-VM-00-0' -ResourceGroupName 'webapp-prod-p01' -ScriptBlock {get-service win*} -Credential (get-credential)
-            Enter-AzVM -name 'AZ-VM-00-0' -ResourceGroupName 'webapp-prod-p01' -Credential (get-credential)
-
+            
   Azure-Remote-Login-VM:
     name: Login to Windows VM using RDP
     runs-on: windows-latest

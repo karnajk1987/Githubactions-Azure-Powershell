@@ -3,7 +3,7 @@ name: "AzurePowerShell-Script-To-CreateSnoshot-From-VM"
 on:
   push:
     branches: [main]
-    paths: .github/workflows/snapshot-ci.yml
+    paths: .github/workflows/remote_login_01.yml
   pull_request:
     branches: none # [ main ]
   # Allows you to run this workflow manually from the Actions tab
@@ -72,20 +72,13 @@ jobs:
           inlineScript: |
             Get-AzContext
             Get-AzResourceGroup
-            
-      - name: Check the VM Remote Login Using Invoke
+
+      - name: Check the VM Remote module 
         uses: azure/powershell@v1
         with:
           azPSVersion: "latest"
           inlineScript: |
-            Enable-AzVMPSRemoting -Name 'AZ-VM-00-0' -ResourceGroupName 'webapp-prod-p01' -Protocol https -OsType Windows
-            Invoke-AzVMCommand -Name 'AZ-VM-00-0' -ResourceGroupName 'webapp-prod-p01' -ScriptBlock {get-service win*} -Credential (get-credential)
-            Enter-AzVM -name 'AZ-VM-00-0' -ResourceGroupName 'webapp-prod-p01' -Credential (get-credential)    
-            
-
-#       - name: Run Azure Powershell Script
-#         shell: pwsh
-#         run: ./remote_login_02.ps1
+            Get-Command Enable-AzVMPSRemoting -Module Az.Compute
 
   Azure-Remote-Login-VM:
     name: Login to Windows VM using RDP
@@ -93,13 +86,6 @@ jobs:
     environment: dev
     needs: [Azure-Powershell-Script-Test]
     steps:
-      # - name: Install RDP client
-      #   run: |
-      #     choco install -y microsoft-remote-desktop
-      # - name: Connect to VM using RDP
-      #   run: |
-      #     mstsc.exe /v:10.1.1.5
-
       - name: Download Microsoft Remote Desktop client
         run: |
           Invoke-WebRequest -Uri "https://go.microsoft.com/fwlink/?linkid=2094662" -OutFile "rdp.msi"
@@ -109,11 +95,15 @@ jobs:
       - name: Connect to VM using RDP
         run: |
           mstsc.exe /v:10.1.1.4
-        
-      - name: Check hostname 
+
+      - name: Run Azure Powershell Script
+        shell: pwsh
+        run: ./remote_login_01.ps1
+
+      - name: Check hostname
         uses: azure/powershell@v1
         with:
           azPSVersion: "latest"
           inlineScript: |
-            hostname
+            Get-LocalUser
             ipconfig /all

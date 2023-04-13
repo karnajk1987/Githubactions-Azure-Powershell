@@ -1,5 +1,5 @@
 # Replace the values below with your own credentials and VM details
-$vmPrivateIP = "10.1.1.5"
+$vmPrivateIP = "10.1.1.4"
 $username = "adminuser"
 $password = "P@$$w0rd1234!"
 $newUsername = "adminuser-1"
